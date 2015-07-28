@@ -9,7 +9,7 @@ var Enemy = function(x,y) {
     this.x = x; 
     this.y = y;
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 
 
@@ -24,20 +24,20 @@ Enemy.prototype.update = function(dt) {
     if(this.x > 505) {
         this.x = Math.random() - 550;
     }
-}
+};
 
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.var Player = function(x,y) {
 var Player = function(x,y) {
     this.sprite = 'images/char-horn-girl.png';
-    
+//starting point for player 
     this.x = 505/50 - 10;
     this.y = 380;
     
@@ -49,6 +49,7 @@ Player.prototype.update = function(dt) {
     this.y = this.y;
     this.collisionCheck();
 
+//check to see if player has reached the water
     if(this.y < 0 ) {
         this.resetGame();
         alert("You win!");
@@ -56,24 +57,22 @@ Player.prototype.update = function(dt) {
 
 };
 
+//check for player-bug collisions and reset game 
 Player.prototype.collisionCheck = function() {
     for (var i = 0; i < enemyLength; i++) {
-        if(Math.abs(this.x - allEnemies[i].x) < 30 && Math.abs(this.y - allEnemies[i].y) < 30) {
+        if(Math.abs(this.x - allEnemies[i].x) < 40 && Math.abs(this.y - allEnemies[i].y) < 40) {
             this.resetGame();
             alert("Those bugs will get you every time. Try again!");
         }
     }
 };
 
+//draw the player on the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     console.log(this.sprite);
 };
 
-Player.prototype.resetGame = function() {
-    this.x = 505/50 - 10;
-    this.y = 380;
-};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -92,20 +91,20 @@ var enemyLength = allEnemies.length;
 var player = new Player();
 
 
-
+//keystroke movements
 Player.prototype.handleInput = function(keyInput) {
     if(keyInput === 'up') {
         if(this.y < 10) {
-            // this.positionReset();
-            // this.scoreCalulator(50);
+            return null;
         }
         else {
            this.y -= 83; 
         }
     }
     else if(keyInput === 'down') {
-        if(this.y > 400) {
-            return null;        }
+        if(this.y > 350) {
+            return null;
+        }
         else {
            this.y += 83; 
         }
@@ -126,6 +125,12 @@ Player.prototype.handleInput = function(keyInput) {
            this.x += 101;
         }
     }
+};
+
+//resets the game if player collides with a bug
+Player.prototype.resetGame = function() {
+    this.x = 505/50 - 10;
+    this.y = 380;
 };
 
 // This listens for key presses and sends the keys to your
